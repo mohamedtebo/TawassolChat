@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* style scroll-bar */
+@layer {
+    ::-webkit-scrollbar {
+        @apply w-[5px]
+    }
+    ::-webkit-scrollbar-thumb {
+        @apply bg-textNeutralGray rounded-[5px]
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        @apply cursor-pointer
+    }
+}
+
+
+/* style classshowIcon in MsgChat.jsx */
+.chat-user .showIcon {
+    display: none;
+}
+.chat-user:hover .showIcon {
+    display: block;
+}
+.chat-user:hover .badge {
+    display: none;
+}
+
+
+/* style message chat */
+@layer {
+  .message .message-time {
+    @apply hidden
+  }
+  .message:hover .message-time {
+    @apply block
+  }
+  .message-area .message:not(:last-child) .MenuItems {
+    @apply -top-[10px]
+  }
+  .message-area .message:last-child .MenuItems {
+    @apply bottom-[30px]
+  }
+  .TextArea::-webkit-scrollbar {
+    @apply hidden
+  }
+}
+@media (max-width: 575px) {
+  .TextAreaSmall {
+    min-width: 100px;
+  }
+}
+
+
+/* style paperBtn in ChatFooter */
+@layer {
+  .paperBtn .typography {
+    @apply !hidden
+  }
+  .paperBtn:hover .typography {
+    @apply !block
+  }
+}
+
+
+/* style ContactInfo */
+@layer {
+  .ContactInfo .info:not(:last-child) {
+    @apply !border-bgSoftGray !border-b-[2px] !border-solid
+  }
+}
+
+
+.mediaInfoContent {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.mediaInfoContent.show {
+  max-height: 1000px; /* أي قيمة كبيرة تكفي لعرض كل المحتوى */
+}
+
+
+
+/* style for calls page */
+@layer {
+  .imgUserCall .inline-flex {
+    @apply !block
+  }
+}
