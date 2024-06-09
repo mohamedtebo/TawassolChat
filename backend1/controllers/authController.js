@@ -17,25 +17,26 @@ const signToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET);
 
 // Register New User
 exports.register = catchAsync(async (req, res, next) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { firstName, lastName, email, phone, password } = req.body;
 
   const filteredBody = filterObj(
     req.body,
     "firstName",
     "lastName",
     "email",
+    "phone",
     "password"
   );
 
   // check if a verified user with given email exists
 
-  const existing_user = await User.findOne({ email: email });
+  const existing_user = await User.findOne({ phone });
 
   if (existing_user && existing_user.verified) {
     // user with this email already exists, Please login
     return res.status(400).json({
       status: "error",
-      message: "Email already in use, Please login.",
+      message: "Phone already in use, Please login.",
     });
   } else if (existing_user) {
     // if not verified than update prev one
