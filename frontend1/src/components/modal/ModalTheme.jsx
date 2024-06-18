@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     Button,
     Dialog,
@@ -8,24 +8,16 @@ import {
     Typography,
     Radio
 } from "@material-tailwind/react";
+import useGetTheme from '../../hooks/modal/useGetTheme';
 
 const ModalTheme = ({openTheme, handleOpenTheme}) => {
-    const [selectedOption, setSelectedOption] = useState('Light');
+    const [
+        selectedTheme,
+        handleOptionChange,
+        options
+    ] = useGetTheme(handleOpenTheme);
 
-    const handleOptionChange = (e) => {
-        setSelectedOption(e.target.value);
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(selectedOption);
-    }
-
-    const options = [
-        { value: 'Light' },
-        { value: 'Dark' },
-        { value: 'System Default' },
-    ]
+    console.log(selectedTheme)
 
     return (
         <Dialog
@@ -55,7 +47,7 @@ const ModalTheme = ({openTheme, handleOpenTheme}) => {
                                 <Typography color={'black'} className='text-[12px] sm:text-[15px]'>{item.value}</Typography>
                             }
                             value={item.value}
-                            checked={selectedOption === item.value}
+                            checked={selectedTheme === item.value}
                             onChange={handleOptionChange}
                             className="p-[2px] transition-all hover:before:opacity-0 focus:outline-none"
                         />
