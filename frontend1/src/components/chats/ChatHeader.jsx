@@ -4,7 +4,7 @@ import { CiVideoOn, CiPhone, CiMenuKebab } from "react-icons/ci";
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowBack } from 'react-icons/io';
 
-const ChatHeader = ({openDrawerRight}) => {
+const ChatHeader = ({openDrawerRight, selectedTheme}) => {
     const navigate = useNavigate();
 
     const handleGoBack = () => {
@@ -23,7 +23,16 @@ const ChatHeader = ({openDrawerRight}) => {
             rounded-b-[20px]"
         >
             <div className='flex gap-3 items-center'>
-                <IconButton variant="text" className='text-[20px] rounded-full' onClick={handleGoBack}>
+                <IconButton
+                    variant="text"
+                    color={
+                            selectedTheme === 'Light'
+                                ? 'black '
+                            : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'white' : 'black ') : 'white'
+                    }
+                    className='text-[20px] rounded-full'
+                    onClick={handleGoBack}
+                >
                     <IoIosArrowBack />
                 </IconButton>
                 <Avatar
@@ -33,10 +42,14 @@ const ChatHeader = ({openDrawerRight}) => {
                     onClick={openDrawerRight}
                 />
                 <div className='flex flex-col items-center'>
-                    <h1 className='text-textBlack
+                    <h1 className={`${
+                            selectedTheme === 'Light'
+                                ? 'text-textBlack '
+                            : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'text-textWhaite' : 'text-textBlack ') : 'text-textWhaite'
+                        }
                         sm-max:text-[13px]
                         text-[15px]
-                        font-bold'
+                        font-bold`}
                     >
                         User2
                     </h1>
@@ -45,10 +58,28 @@ const ChatHeader = ({openDrawerRight}) => {
                     </p>
                 </div>
             </div>
-            <div className='flex sm-max:gap-2 gap-3 sm-max:text-[27px] text-[33px] text-textBlack'>
-                <CiVideoOn className='hover:bg-bgSoftGray sm-max:p-[5px] p-[7px] rounded-full' />
-                <CiPhone className='hover:bg-bgSoftGray sm-max:p-[5px] p-[7px] rounded-full' />
-                <CiMenuKebab className='hover:bg-bgSoftGray sm-max:p-[5px] p-[7px] rounded-full' />
+            <div className={`flex sm-max:gap-2 gap-3 sm-max:text-[27px] text-[33px]
+                ${
+                    selectedTheme === 'Light'
+                        ? 'text-textBlack '
+                    : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'text-textWhaite' : 'text-textBlack ') : 'text-textWhaite'
+                }`}
+            >
+                <CiVideoOn className={`${
+                    selectedTheme === 'Light'
+                        ? 'hover:bg-bgSoftGray '
+                    : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'hover:bg-bgCharcoalGray' : 'hover:bg-bgSoftGray ') : 'hover:bg-bgCharcoalGray'
+                } sm-max:p-[5px] p-[7px] rounded-full`} />
+                <CiPhone className={`${
+                    selectedTheme === 'Light'
+                        ? 'hover:bg-bgSoftGray '
+                    : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'hover:bg-bgCharcoalGray' : 'hover:bg-bgSoftGray ') : 'hover:bg-bgCharcoalGray'
+                } sm-max:p-[5px] p-[7px] rounded-full`} />
+                <CiMenuKebab className={`${
+                    selectedTheme === 'Light'
+                        ? 'hover:bg-bgSoftGray '
+                    : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'hover:bg-bgCharcoalGray' : 'hover:bg-bgSoftGray ') : 'hover:bg-bgCharcoalGray'
+                } sm-max:p-[5px] p-[7px] rounded-full`} />
             </div>
         </div>
     );

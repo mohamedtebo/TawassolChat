@@ -5,10 +5,15 @@ import { BsCheck } from "react-icons/bs";
 import { IoIosArrowDown } from "react-icons/io";
 import { Link } from 'react-router-dom';
 
-const MsgChat = ({link}) => {
+const MsgChat = ({link, selectedTheme}) => {
     return (
         <Link to={link}>
-            <div className="chat-user flex gap-[20px] items-center my-[10px] p-3 rounded-[20px] hover:bg-bgSoftGray ">
+            <div className={`chat-user flex gap-[20px] items-center my-[10px] p-3 rounded-[20px]
+            ${
+                selectedTheme === 'Light'
+                    ? 'hover:bg-bgSoftGray '
+                : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'hover:bg-bgCharcoalGray' : 'hover:bg-bgSoftGray ') : 'hover:bg-bgCharcoalGray'
+            }`}>
                 <div className='imgUser relative'>
                     <Badge overlap="circular" placement="bottom-end" className='bg-[#86efac] badge'>
                         <Avatar
@@ -19,7 +24,12 @@ const MsgChat = ({link}) => {
                 </div>
                 <div className="chat-user-info w-full">
                     <div className='nameUser flex justify-between'>
-                        <h3 className='text-textBlack font-bold'>Williams</h3>
+                        <h3 className={`${
+                            selectedTheme === 'Light'
+                                ? 'text-textBlack '
+                            : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'text-textWhaite' : 'text-textBlack ') : 'text-textWhaite'
+                        }
+                        font-bold`}>Williams</h3>
                         <p className='text-textNeutralGray text-[12px]'>7:40 PM</p>
                     </div>
                     <div className='chat-user-status flex justify-between'>

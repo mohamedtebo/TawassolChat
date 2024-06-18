@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ProfileImg from '../../assets/Profile.png';
 import { Avatar, Button, Input, Textarea, Typography } from '@material-tailwind/react';
 
-const ProfileForm = () => {
+const ProfileForm = ({selectedTheme}) => {
     const [name, setName] = useState('');
     const [about, setAbout] = useState('');
     const [avatar, setAvatar] = useState(ProfileImg);
@@ -80,7 +80,11 @@ const ProfileForm = () => {
                     className={`!rounded-[20px]
                         !border
                         ${errors.name ? '!border-red-300' : '!border-bgSoftGray'}
-                        text-textBlack
+                        ${
+                            selectedTheme === 'Light'
+                                ? 'text-textBlack '
+                            : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'text-textWhaite' : 'text-textBlack ') : 'text-textWhaite'
+                        }
                         placeholder:opacity-100
                         focus:outline-none
                     !px-[24px]`}
@@ -105,7 +109,11 @@ const ProfileForm = () => {
                     className={`!rounded-[20px]
                         !border
                         ${errors.name ? '!border-red-300' : '!border-bgSoftGray'}
-                        text-textBlack
+                        ${
+                            selectedTheme === 'Light'
+                                ? 'text-textBlack '
+                            : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'text-textWhaite' : 'text-textBlack ') : 'text-textWhaite'
+                        }
                         placeholder:opacity-100
                         focus:outline-none
                     !px-[24px]`}

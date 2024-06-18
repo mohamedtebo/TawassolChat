@@ -10,9 +10,11 @@ import {
 import { Avatar } from "@material-tailwind/react";
 import logo from '../../assets/tawassol-logo.png';
 import logoMopile from '../../assets/tawassol-logo-head.png';
+import { useSelector } from 'react-redux';
 
 const Sidebar = ({children}) => {
     const location = useLocation();
+    const {selectedTheme} = useSelector(state => state.theme);
 
     let pageItems = [
         {
@@ -59,7 +61,11 @@ const Sidebar = ({children}) => {
                 sm:max-w-[10rem]
                 md:max-w-[12rem]
                 lg:max-w-[15rem]
-                bg-bgWhaite
+                ${
+                    selectedTheme === 'Light'
+                        ? 'bg-bgWhaite'
+                    : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'bg-bgblack' : 'bg-bgWhaite') : 'bg-bgblack'
+                }
                 flex
                 flex-col
                 justify-between`}
@@ -78,7 +84,11 @@ const Sidebar = ({children}) => {
                                             location.pathname === item.link ? 
                                                 'text-primary bg-bgSoftGray font-[600]'
                                             : `
-                                                text-textNeutralGray
+                                                ${
+                                                    selectedTheme === 'Light'
+                                                        ? 'text-textNeutralGray '
+                                                    : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'text-textWhaite' : 'text-textNeutralGray ') : 'text-textWhaite'
+                                                }
                                             bg-transparent font-normal`
                                         }
                                         hover:bg-bgSoftGray
@@ -112,7 +122,11 @@ const Sidebar = ({children}) => {
                                             location.pathname === item.link ?
                                                 'text-primary font-[600]'
                                             : `
-                                                text-textNeutralGray
+                                                ${
+                                                    selectedTheme === 'Light'
+                                                        ? 'text-textNeutralGray '
+                                                    : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'text-textWhaite' : 'text-textNeutralGray ') : 'text-textWhaite'
+                                                }
                                                 font-normal
                                             `
                                         }

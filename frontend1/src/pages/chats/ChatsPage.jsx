@@ -4,10 +4,18 @@ import SearchPage from '../../components/utils/SearchPage';
 import MsgChat from '../../components/MsgChat';
 import pen from '../../assets/pen.png';
 import { HiOutlinePlus } from "react-icons/hi";
+import { useSelector } from 'react-redux';
 
 const ChatsPage = () => {
+    const {selectedTheme} = useSelector(state => state.theme);
+
     return (
-        <div className='bg-bgWhaite pt-4 px-6 h-full max-h-[100vh] w-full overflow-auto'>
+        <div className={`${
+                selectedTheme === 'Light'
+                    ? 'bg-bgWhaite'
+                : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'bg-bgblack' : 'bg-bgWhaite') : 'bg-bgblack'
+            }
+            pt-4 px-6 h-full max-h-[100vh] w-full overflow-auto`}>
             <TiltePage name="Chats" icon={pen} />
 
             <div className="chat-app">

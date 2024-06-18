@@ -4,8 +4,11 @@ import TiltePage from '../../components/utils/TiltePage';
 import SearchPage from '../../components/utils/SearchPage';
 import CallCard from '../../components/CallCard';
 import { MdOutlineAddIcCall } from "react-icons/md";
+import { useSelector } from 'react-redux';
 
 const CallsPage = ({handleOpen}) => {
+    const {selectedTheme} = useSelector(state => state.theme);
+
     let callList = [
         {
             name: 'Cool',
@@ -49,7 +52,11 @@ const CallsPage = ({handleOpen}) => {
         },
     ]
     return (
-        <div className={`bg-bgWhaite
+        <div className={`${
+                selectedTheme === 'Light'
+                    ? 'bg-bgWhaite '
+                : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'bg-bgblack' : 'bg-bgWhaite ') : 'bg-bgblack'
+            }
             pt-4 px-6 h-[100vh] max-h-[100vh] w-full overflow-auto`}
         >
             <TiltePage name="Calls" icon={pen} />
@@ -68,6 +75,7 @@ const CallsPage = ({handleOpen}) => {
                                     status={item.status}
                                     incoming={item.incoming}
                                     type={item.type}
+                                    selectedTheme={selectedTheme}
                                 />
                             ))
                         }

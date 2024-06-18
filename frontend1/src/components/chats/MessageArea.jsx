@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useRef } from 'react'
 import { VscKebabVertical } from "react-icons/vsc";
 import { Menu } from '@headlessui/react'
 
-const MessageArea = ({messages}) => {
+const MessageArea = ({messages, selectedTheme}) => {
     const messageAreaRef = useRef(null);
 
     // This effect ensures scrolling to the bottom of messages when content changes
@@ -69,17 +69,31 @@ const MessageArea = ({messages}) => {
                     <div className="absolute -right-[10px] top-[25px]">
                         <Menu as="div" className="relative inline-block text-left">
                             <Menu.Button>
-                                <VscKebabVertical />
+                                <VscKebabVertical className={`${
+                            selectedTheme === 'Light'
+                                ? 'text-textBlack '
+                            : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'text-textWhaite' : 'text-textBlack ') : 'text-textWhaite'
+                        }`} />
                             </Menu.Button>
 
-                            <Menu.Items onClick={() => console.log(index)} className='absolute right-[15px] w-[130px] z-[999] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none overflow-y-auto flex-grow MenuItems'>
+                            <Menu.Items onClick={() => console.log(index)} className={`absolute right-[15px] w-[130px] z-[999] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none overflow-y-auto flex-grow MenuItems
+                                ${
+                                selectedTheme === 'Light'
+                                    ? 'bg-bgSoftGray '
+                                : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'bg-bgCharcoalGray' : 'bg-bgSoftGray') : 'bg-bgCharcoalGray'
+                            }`}>
                                 {msgOptions.map((item, index) => (
                                     <Menu.Item key={index}>
                                         {({ active }) => (
                                             <button
                                                 className={`${
                                                     active ? 'bg-gray-100' : ''
-                                                } flex rounded-md items-center justify-center w-full px-2 py-2 text-sm text-gray-700`}
+                                                } flex rounded-md items-center justify-center w-full px-2 py-2 text-sm
+                                                ${
+                                                    selectedTheme === 'Light'
+                                                        ? 'text-textBlack hover:text-textWhaite'
+                                                    : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'text-textWhaite hover:text-textBlack' : 'text-textBlack hover:text-textWhaite') : 'text-textWhaite hover:text-textBlack'
+                                                }`}
                                                 onClick={() => console.log(`${item.nameOption} clicked`)}
                                             >
                                                 {item.nameOption}

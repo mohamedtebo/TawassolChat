@@ -10,10 +10,12 @@ import { PiPencilCircle } from "react-icons/pi";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { MdOutlineKeyboard } from "react-icons/md";
 import { MdOutlineInfo } from "react-icons/md";
+import { useSelector } from 'react-redux';
 
 
 const SettingsPage = ({handleOpenTheme, handleOpenShortcuts}) => {
     const navigate = useNavigate();
+    const {selectedTheme} = useSelector(state => state.theme);
 
     const handleGoBack = () => {
         navigate(-1)
@@ -64,7 +66,11 @@ const SettingsPage = ({handleOpenTheme, handleOpenShortcuts}) => {
 
     return (
         <div className={`
-            bg-bgWhaite
+            ${
+                selectedTheme === 'Light'
+                    ? 'bg-bgWhaite'
+                : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'bg-bgblack' : 'bg-bgWhaite') : 'bg-bgblack'
+            }
             ContactInfo w-full py-4 px-6 flex flex-col gap-[50px]
         `}>
             {/* Title and switch button */}
@@ -72,7 +78,11 @@ const SettingsPage = ({handleOpenTheme, handleOpenShortcuts}) => {
                 <IconButton
                     variant="text"
                     className={`
-                        text-textBlack
+                        ${
+                            selectedTheme === 'Light'
+                                ? 'text-textBlack '
+                            : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'text-textWhaite' : 'text-textBlack ') : 'text-textWhaite'
+                        }
                         text-[20px]
                     `}
                     onClick={handleGoBack}
@@ -81,7 +91,11 @@ const SettingsPage = ({handleOpenTheme, handleOpenShortcuts}) => {
                 </IconButton>
                 <Typography
                     className={`
-                        text-textBlack
+                        ${
+                            selectedTheme === 'Light'
+                                ? 'text-textBlack '
+                            : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'text-textWhaite' : 'text-textBlack ') : 'text-textWhaite'
+                        }
                         text-[20px] font-bold
                     `}
                 >Settings</Typography>
@@ -96,7 +110,11 @@ const SettingsPage = ({handleOpenTheme, handleOpenShortcuts}) => {
                             className="info container mx-auto py-[10px] cursor-pointer groupsInfo"
                         >
                             <div className='flex items-center'>
-                                <p className={`text-textBlack
+                                <p className={`${
+                                        selectedTheme === 'Light'
+                                            ? 'text-textBlack '
+                                        : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'text-textWhaite' : 'text-textBlack ') : 'text-textWhaite'
+                                    }
                                     font-bold flex gap-2 items-center`}
                                 >
                                     {item.icon}

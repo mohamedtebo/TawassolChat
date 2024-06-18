@@ -8,8 +8,10 @@ import send from '../../assets/send3.png';
 import 'emoji-mart/css/emoji-mart.css'
 import { Picker } from 'emoji-mart'
 import { motion, AnimatePresence } from "framer-motion";
+import { useSelector } from 'react-redux';
 
 const ChatFooter = () => {
+    const {selectedTheme} = useSelector(state => state.theme);
     const Actions = [
         {
             color: "#B88CFF",
@@ -112,6 +114,11 @@ const ChatFooter = () => {
                 {pickerOpen && <Picker
                     onSelect={handleEmojiSelect}
                     color='#9747FF'
+                    theme={
+                            selectedTheme === 'Light'
+                                ? 'light '
+                            : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light ') : 'dark'
+                        }
                     showPreview={false}
                     showSkinTones={false}
                     emojiSize={20}
@@ -160,7 +167,7 @@ const ChatFooter = () => {
                 )}
             </AnimatePresence>
 
-            <div className="flex
+            <div className={`flex
                 w-full
                 flex-row
                 items-center
@@ -170,9 +177,14 @@ const ChatFooter = () => {
                 border
                 border-gray-300
                 bg-bgSoftGray
+                ${
+                    selectedTheme === 'Light'
+                        ? 'bg-bgSoftGray '
+                    : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'bg-bgCharcoalGray' : 'bg-bgSoftGray ') : 'bg-bgCharcoalGray'
+                }
                 py-1
                 px-3
-                sm-max:px-1"
+                sm-max:px-1`}
             >
                 <div className="flex gap-3 items-center sm-max:gap-1">
                     <LiaPaperclipSolid onClick={handlePaperToggle} className='text-textNeutralGray text-[25px] cursor-pointer' />
@@ -184,7 +196,12 @@ const ChatFooter = () => {
                     onFocus={handleTextareaFocus}
                     rows={1}
                     placeholder="Your Message"
-                    className="min-h-full !border-0 focus:border-transparent TextArea sm-max:px-0"
+                    className={`min-h-full !border-0 focus:border-transparent TextArea sm-max:px-0
+                        ${
+                            selectedTheme === 'Light'
+                                ? 'text-textBlack '
+                            : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'text-textWhaite' : 'text-textBlack ') : 'text-textWhaite'
+                        }`}
                     containerProps={{
                         className: "grid h-full TextAreaSmall",
                     }}
