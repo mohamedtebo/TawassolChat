@@ -78,7 +78,6 @@ exports.sendOTP = catchAsync(async (req, res, next) => {
   await user.save({ new: true, validateModifiedOnly: true });
 
   console.log("OTP for verification is", new_otp);
-  const token = signToken(user._id);
 
   // TODO send mail
   try {
@@ -93,7 +92,6 @@ exports.sendOTP = catchAsync(async (req, res, next) => {
     res.status(200).json({
       status: "success",
       message: "OTP Sent Successfully!",
-      token
     });
   } catch (error) {
     console.log(error);
