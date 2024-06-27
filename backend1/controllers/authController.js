@@ -146,6 +146,7 @@ exports.verifyOTP = catchAsync(async (req, res, next) => {
     status: "success",
     message: "OTP verified Successfully!",
     token,
+    email,
     user_id: user._id,
   });
 });
