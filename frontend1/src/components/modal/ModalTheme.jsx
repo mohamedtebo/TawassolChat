@@ -17,8 +17,6 @@ const ModalTheme = ({openTheme, handleOpenTheme}) => {
         options
     ] = useGetTheme(handleOpenTheme);
 
-    console.log(selectedTheme)
-
     return (
         <Dialog
             size="xs"
