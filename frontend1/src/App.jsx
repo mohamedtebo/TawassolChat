@@ -18,6 +18,7 @@ import ModalShortcuts from "./components/modal/ModalShortcuts";
 import ModalCreateGroup from "./components/modal/ModalCreateGroup";
 import ModalCalls from "./components/modal/ModalCalls";
 import { ProtectLogged, ProtectNotLogged } from "./routes/ProtectedRoutes";
+import VerifyEmailPage from "./pages/auth/VerifyEmailPage";
 
 function App() {
   const isAuthenticated = true;
@@ -55,6 +56,7 @@ function App() {
             <Route path="register" element={<RegisterPage />} />
             <Route path="reset-password" element={<ResetPasswordPage />} />
             <Route path="new-password" element={<NewPasswordPage />} />
+            <Route path="verify-email" element={<VerifyEmailPage />} />
           </Route>
         </Routes>
 
