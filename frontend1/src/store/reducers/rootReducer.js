@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import storage from "redux-persist/lib/storage";
 import themeReducer from "./themeReducer";
+import authReducer from "./authReducer";
 
 const persistConfig = {
     key: 'root',
@@ -8,7 +9,8 @@ const persistConfig = {
     keyPrefix: 'redux-',
 }
 const rootReducer = combineReducers({
-    theme: themeReducer
+    theme: themeReducer,
+    auth: authReducer
 });
 
 export {persistConfig, rootReducer};
