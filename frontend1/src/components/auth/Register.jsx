@@ -1,54 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5'
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
+import useAddRegister from '../../hooks/auth/useAddRegister';
+
 
 const Register = () => {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [errors, setErrors] = useState({});
-    const [showshowPass, setShowPass] = useState(false)
-
-    const validateValues = () => {
-        let errors = {}
-        if (firstName === '') {
-            errors.firstName = "Please enter your first name";
-        }
-        if (lastName === '') {
-            errors.lastName = "Please enter your last name";
-        }
-        if (email === '') {
-            errors.email = "Please enter your email";
-        }
-        if (password === '') {
-            errors.password = "Please enter your password";
-        }
-        return errors;
-    }
-    
-    const handleChangeFirstName = (e) => {
-        setFirstName(e.target.value);
-    }
-    
-    const handleChangeLastName = (e) => {
-        setLastName(e.target.value);
-    }
-    const handleChangeEmail = (e) => {
-        setEmail(e.target.value);
-    }
-    
-    const handleChangePassword = (e) => {
-        setPassword(e.target.value);
-    }
-
-    const handleShowPass = () => {
-        setShowPass(!showshowPass)
-    }
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setErrors(validateValues());
-    }
+    // Values and handlers from the custom hook
+    const [
+        firstName,
+        handleChangeFirstName,
+        lastName,
+        handleChangeLastName,
+        email,
+        handleChangeEmail,
+        phone,
+        handleChangePhone,
+        password,
+        handleChangePassword,
+        errors,
+        showshowPass,
+        handleShowPass,
+        handleSubmit,
+    ] = useAddRegister();
 
     return (
         <form className="mt-8 space-y-3" onSubmit={handleSubmit}>
@@ -71,6 +45,7 @@ const Register = () => {
                             focus:outline-none
                         text-sm`}
                     />
+                    {errors.firstName && <p className='text-red-300 text-[13px] px-[8px]'>{errors.firstName}</p>}
                     <input
                         type="text"
                         placeholder="Last name"
@@ -88,9 +63,8 @@ const Register = () => {
                             focus:outline-none
                         text-sm`}
                     />
+                    {errors.lastName && <p className='text-red-300 text-[13px] px-[8px]'>{errors.lastName}</p>}
                 </div>
-                {errors.firstName && <p className='text-red-300 text-[13px] px-[8px]'>{errors.firstName}</p>}
-                {errors.lastName && <p className='text-red-300 text-[13px] px-[8px]'>{errors.lastName}</p>}
                 <div className='flex flex-col gap-[6px]'>
                     <input
                         type="email"
@@ -110,6 +84,17 @@ const Register = () => {
                         text-sm`}
                     />
                     {errors.email && <p className='text-red-300 text-[13px] px-[8px]'>{errors.email}</p>}
+                </div>
+                <div className='flex flex-col gap-[6px] w-full'>
+                    <PhoneInput
+                        country={"eg"}
+                        value={phone}
+                        onChange={handleChangePhone}
+                        placeholder='Phone'
+                        // containerClass="phone-input-container"
+                        containerClass={`${errors.phone ? "phone-input-container-error" : "phone-input-container"}`}
+                    />
+                    {errors.phone && <p className='text-red-300 text-[13px] px-[8px]'>{errors.phone}</p>}
                 </div>
                 <div className='flex flex-col gap-[6px] relative'>
                     <input
