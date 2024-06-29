@@ -44,11 +44,11 @@ const VerifyEmail = () => {
                         isInputNum={true}
                         separator={<span>-</span>}
                         shouldAutoFocus={true}
-                        inputStyle="otp-input"
+                        inputStyle={`${errors.otp ? "otp-input-error" : "otp-input"}`}
                         containerStyle="otp-container"
                     />
-                    {errors.otp && <p className='text-red-300 text-[13px] px-[8px]'>{errors.otp}</p>}
                 </div>
+                {errors.otp && <p className='text-red-300 text-[13px] px-[8px] text-center'>{errors.otp}</p>}
             </div>
 
             <button
