@@ -91,3 +91,72 @@
         @apply !block
     }
 }
+
+/* style for otp-input */
+.otp-input-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.otp-input {
+    width: 35px !important;
+    height: 35px;
+    border: 1px solid rgb(224 224 224);
+    border-radius: 10px;
+    text-align: center;
+    font-size: 13px;
+    color: #333;
+}
+
+.otp-input:focus {
+    outline: none;
+}
+
+.otp-container {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* style for phone-input */
+.phone-input-container,
+.phone-input-container-error {
+    width: 100%;
+    height: 35px;
+    position: relative;
+} 
+
+.phone-input-container .form-control {
+    border: 1px solid rgb(224 224 224);
+}
+.phone-input-container-error .form-control {
+    border: 1px solid rgb(229 115 115);
+}
+.phone-input-container .form-control,
+.phone-input-container-error .form-control {
+    border-radius: 10px;
+    padding: 6px 60px;
+    width: 100%;
+    height: 100%;
+    font-size: 0.875rem;
+    outline: none;
+}
+/* .phone-input-container-error {
+    border-radius: 10px;
+} */
+.phone-input-container .form-control:focus,
+.phone-input-container-error .form-control:focus {
+    outline: none;
+}
+.phone-input-container .flag-dropdown {
+    border: 1px solid rgb(224 224 224);
+}
+.phone-input-container-error .flag-dropdown {
+    border: 1px solid rgb(229 115 115);
+}
+.phone-input-container .flag-dropdown,
+.phone-input-container-error .flag-dropdown {
+    border-radius: 10px 0 0 10px;
+    padding: 6px;
+}
