@@ -100,9 +100,15 @@
 }
 
 .otp-input {
+    border: 1px solid rgb(224 224 224);
+}
+.otp-input-error {
+    border: 1px solid rgb(229 115 115);
+}
+.otp-input,
+.otp-input-error {
     width: 35px !important;
     height: 35px;
-    border: 1px solid rgb(224 224 224);
     border-radius: 10px;
     text-align: center;
     font-size: 13px;
