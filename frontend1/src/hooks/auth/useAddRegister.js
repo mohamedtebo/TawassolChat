@@ -41,26 +41,41 @@ const useAddRegister = () => {
     // Event handle for input firstName change
     const handleChangeFirstName = (e) => {
         setFirstName(e.target.value);
+        if (errors.firstName) {
+            setErrors(prevErrors => ({ ...prevErrors, firstName: '' }));
+        }
     }
     
     // Event handle for input lastName change
     const handleChangeLastName = (e) => {
         setLastName(e.target.value);
+        if (errors.lastName) {
+            setErrors(prevErrors => ({ ...prevErrors, lastName: '' }));
+        }
     }
 
     // Event handle for input email change
     const handleChangeEmail = (e) => {
         setEmail(e.target.value);
+        if (errors.email) {
+            setErrors(prevErrors => ({ ...prevErrors, email: '' }));
+        }
     }
     
     // Event handle for input phone change
     const handleChangePhone = (e) => {
         setPhone(e);
+        if (errors.phone) {
+            setErrors(prevErrors => ({ ...prevErrors, phone: '' }));
+        }
     }
     
     // Event handle for input password change
     const handleChangePassword = (e) => {
         setPassword(e.target.value);
+        if (errors.password) {
+            setErrors(prevErrors => ({ ...prevErrors, password: '' }));
+        }
     }
 
     // Toggle password visibility
@@ -111,8 +126,8 @@ const useAddRegister = () => {
             }
         }
         if(user) {
-            if(user.message === 'OTP Sent Successfully!') {
-                toast.success('OTP Sent Successfully!');
+            if(user.message === "User registered successfully!") {
+                toast.success("User registered successfully");
                 setTimeout(() => {
                     setFirstName("")
                     setLastName("")
@@ -121,7 +136,7 @@ const useAddRegister = () => {
                     setPassword("")
                 }, 500)
                 setTimeout(() => {
-                    navigate('/auth/verify-email')
+                    navigate('/auth/login')
                 }, 1500)
             }
         }
