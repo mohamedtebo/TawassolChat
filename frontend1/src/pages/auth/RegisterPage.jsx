@@ -2,8 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import Register from '../../components/auth/Register'
 import AuthSocial from '../../components/auth/AuthSocial'
+import { useSelector } from 'react-redux';
+import Loading from '../../components/utils/Loading';
 
 const RegisterPage = () => {
+    const {loading} = useSelector(state => state.auth);
+    
     const handleGoogleRegister = () => {
         console.log('GoogleLogin')
     }
@@ -47,6 +51,12 @@ const RegisterPage = () => {
                 handleGithub = {handleGithubRegister}
                 handleTwitter = {handleTwitterRegister}
             />
+
+
+            {/* Loading component */}
+            {
+                loading ? <Loading /> : null
+            }
         </div>
     )
 }
