@@ -62,10 +62,10 @@ const userSchema = new mongoose.Schema({
     // unselect
     type: Date,
   },
-  verified: {
-    type: Boolean,
-    default: false,
-  },
+  // verified: {
+  //   type: Boolean,
+  //   default: false,
+  // },
   otp: {
     type: String,
   },
