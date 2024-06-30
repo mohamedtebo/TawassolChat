@@ -14,14 +14,28 @@ export const registerUser = createAsyncThunk('auth/register', async (body, { rej
     }
 });
 
+// Thunk for login a user
+export const loginUser = createAsyncThunk('auth/login', async (body, { rejectWithValue }) => {
+    try {
+        // Call the API to login the user
+        const response = await useCreateData(`/auth/login`, body);
+        // Return the response data on success
+        return response.data;
+    } catch (error) {
+        console.log(error)
+        // Return the error response data on failure
+        return rejectWithValue(error.response.data);
+    }
+});
+
 
 // Initial state for the authentication reducer
 const initialState = {
     user: {},
     loggedIn: false,
-    token: "",
-    user_email: "",
-    user_id: "",
+    token: localStorage.getItem("token") || "",
+    user_email: localStorage.getItem("user_email") || "",
+    user_id: localStorage.getItem("user_id") || "",
     loading: false,
     error: null,
 };
@@ -31,6 +45,21 @@ const initialState = {
 const authReducer = createSlice({
     name: 'auth',
     initialState,
+    reducers: {
+        logOutUser: (state) => {
+            state.user = {};
+            state.loading = false;
+            state.loggedIn = false;
+            state.user_email = "";
+            state.user_id = "";
+            state.token = "";
+
+            // Store token and user_id in localStorage
+            localStorage.removeItem("token");
+            localStorage.removeItem("user_id");
+            localStorage.removeItem("user_email");
+        }
+    },
     extraReducers: (builder) => {
         // Handle pending, fulfilled and rejected state of registerUser thunk
         builder.addCase(registerUser.pending, (state) => {
@@ -43,12 +72,40 @@ const authReducer = createSlice({
             state.user_email = state.user.email;
             state.user_id = state.user.user_id;
             state.token = state.user.token;
+
+            // Store token, user_email and user_id in localStorage
+            localStorage.setItem("token", state.token);
+            localStorage.setItem("user_email", state.user_email);
+            localStorage.setItem("user_id", state.user_id);
         });
         builder.addCase(registerUser.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        });
+        
+        
+        // Handle pending, fulfilled and rejected state of loginUser thunk
+        builder.addCase(loginUser.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(loginUser.fulfilled, (state, action) => {
+            state.loading = false;
+            state.loggedIn = true;
+            state.user = action.payload;
+            state.user_id = state.user.user_id;
+            state.token = state.user.token;
+
+            // Store token and user_id in localStorage
+            localStorage.setItem("token", state.token);
+            localStorage.setItem("user_id", state.user_id);
+        });
+        builder.addCase(loginUser.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
         });
     },
 });
 
+export const { logOutUser } = authReducer.actions
 export default authReducer.reducer
