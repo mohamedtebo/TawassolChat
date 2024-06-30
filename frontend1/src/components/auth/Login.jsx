@@ -1,40 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
+import { useDispatch, useSelector } from 'react-redux';
+import { register } from '../../store/actions/authAction';
+import { loginUser } from '../../store/reducers/authReducer';
+import { toast } from 'react-toastify';
+import useAddLogin from '../../hooks/auth/useAddLogin';
 
 const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [errors, setErrors] = useState({});
-    const [showshowPass, setShowPass] = useState(false)
-
-    const validateValues = () => {
-        let errors = {}
-        if (email === '') {
-            errors.email = "Please enter your email";
-        }
-        if (password === '') {
-            errors.password = "Please enter your password";
-        }
-        return errors;
-    }
-    
-    const handleChangeEmail = (e) => {
-        setEmail(e.target.value);
-    }
-    
-    const handleChangePassword = (e) => {
-        setPassword(e.target.value);
-    }
-
-    const handleShowPass = () => {
-        setShowPass(!showshowPass)
-    }
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setErrors(validateValues());
-    }
+    const [
+        email,
+        handleChangeEmail,
+        password,
+        handleChangePassword,
+        errors,
+        showshowPass,
+        handleShowPass,
+        handleSubmit
+    ] = useAddLogin();
 
     return (
         <form className="mt-8 space-y-3" onSubmit={handleSubmit}>
