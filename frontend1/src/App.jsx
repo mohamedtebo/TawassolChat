@@ -31,7 +31,7 @@ function App() {
   const [openShortcuts, setOpenShortcuts] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
   const [openCalls, setOpenCalls] = useState(false);
-  const [openLogout, setOpenLogout] = openLogout(false);
+  const [openLogout, setOpenLogout] = useState(false);
   const handleOpenTheme = () => setOpenTheme(!openTheme);
   const handleOpenShortcuts = () => setOpenShortcuts(!openShortcuts);
   const handleOpenCreate = () => setOpenCreate(!openCreate);
