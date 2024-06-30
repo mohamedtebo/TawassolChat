@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { IoIosPower } from "react-icons/io";
 import { PiUsersThree } from "react-icons/pi";
 import {
@@ -12,7 +12,8 @@ import logo from '../../assets/tawassol-logo.png';
 import logoMopile from '../../assets/tawassol-logo-head.png';
 import { useSelector } from 'react-redux';
 
-const Sidebar = ({children}) => {
+const Sidebar = ({children, handleOpenLogout}) => {
+    const navigate = useNavigate();
     const location = useLocation();
     const {selectedTheme} = useSelector(state => state.theme);
 
@@ -38,17 +39,20 @@ const Sidebar = ({children}) => {
         {
             icon: <Avatar src="https://docs.material-tailwind.com/img/face-2.jpg" alt="avatar" className="h-6 w-6" />,
             name: 'Profile',
-            link: '/profile'
+            link: '/profile',
+            action: () => navigate('/profile')
         },
         {
             icon: <IoSettingsOutline className="h-5 w-5" />,
             name: 'Settings',
-            link: '/settings'
+            link: '/settings',
+            action: () => navigate('/settings')
         },
         {
             icon: <IoIosPower className="h-5 w-5" />,
             name: 'Log Out',
-            link: '/logOut'
+            link: '/logOut',
+            action: () => handleOpenLogout()
         },
     ]
 
@@ -116,35 +120,33 @@ const Sidebar = ({children}) => {
                     <div className='pr-0 pl-2'>
                         {
                             PersonalPages.map((item, index) => (
-                                <Link to={item.link} key={index}>
-                                    <div className={`
-                                        ${
-                                            location.pathname === item.link ?
-                                                'text-primary font-[600]'
-                                            : `
-                                                ${
-                                                    selectedTheme === 'Light'
-                                                        ? 'text-textNeutralGray '
-                                                    : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'text-textWhaite' : 'text-textNeutralGray ') : 'text-textWhaite'
-                                                }
-                                                font-normal
-                                            `
-                                        }
-                                        hover:text-primary
-                                        hover:font-[600]
-                                        text-[15px]
-                                        flex
-                                        gap-[10px]
-                                        sm-max:px-[6px]
-                                        py-3
-                                        px-3
-                                        cursor-pointer`
-                                        }
-                                    >
-                                        {item.icon}
-                                        <h1 className='sm-max:hidden'>{item.name}</h1>
-                                    </div>
-                                </Link>
+                                <div onClick={item.action} key={index} className={`
+                                    ${
+                                        location.pathname === item.link ?
+                                            'text-primary font-[600]'
+                                        : `
+                                            ${
+                                                selectedTheme === 'Light'
+                                                    ? 'text-textNeutralGray '
+                                                : selectedTheme === 'System Default' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'text-textWhaite' : 'text-textNeutralGray ') : 'text-textWhaite'
+                                            }
+                                            font-normal
+                                        `
+                                    }
+                                    hover:text-primary
+                                    hover:font-[600]
+                                    text-[15px]
+                                    flex
+                                    gap-[10px]
+                                    sm-max:px-[6px]
+                                    py-3
+                                    px-3
+                                    cursor-pointer`
+                                    }
+                                >
+                                    {item.icon}
+                                    <h1 className='sm-max:hidden'>{item.name}</h1>
+                                </div>
                             ))
                         }
                     </div>
