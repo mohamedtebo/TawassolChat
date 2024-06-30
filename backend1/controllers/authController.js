@@ -184,19 +184,19 @@ exports.login = catchAsync(async (req, res, next) => {
 
   const user = await User.findOne({ email: email }).select("+password");
 
-  if (!user || !user.password) {
+  if (!user) {
     res.status(400).json({
       status: "error",
-      message: "Incorrect password",
+      message: "Email address is incorrect",
     });
 
     return;
   }
 
-  if (!user || !(await user.correctPassword(password, user.password))) {
+  if (!(await user.correctPassword(password, user.password))) {
     res.status(400).json({
       status: "error",
-      message: "Email or password is incorrect",
+      message: "Password is incorrect",
     });
 
     return;
