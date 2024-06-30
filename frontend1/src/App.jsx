@@ -19,24 +19,39 @@ import ModalCreateGroup from "./components/modal/ModalCreateGroup";
 import ModalCalls from "./components/modal/ModalCalls";
 import { ProtectLogged, ProtectNotLogged } from "./routes/ProtectedRoutes";
 import VerifyEmailPage from "./pages/auth/VerifyEmailPage";
+import { useDispatch, useSelector } from "react-redux";
+import ModalLogout from "./components/modal/ModalLogout";
+import { logOutUser } from "./store/reducers/authReducer";
+import { toast } from "react-toastify";
 
 function App() {
-  const isAuthenticated = true;
+  const dispatch = useDispatch()
+  const {loggedIn} = useSelector(state => state.auth);
   const [openTheme, setOpenTheme] = useState(false);
   const [openShortcuts, setOpenShortcuts] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
   const [openCalls, setOpenCalls] = useState(false);
+  const [openLogout, setOpenLogout] = openLogout(false);
   const handleOpenTheme = () => setOpenTheme(!openTheme);
   const handleOpenShortcuts = () => setOpenShortcuts(!openShortcuts);
   const handleOpenCreate = () => setOpenCreate(!openCreate);
   const handleOpenCalls = () => setOpenCalls(!openCalls);
+  const handleOpenLogout = () => setOpenLogout(!openLogout);
+
+  const confirmLogOut = () => {
+    handleOpenLogout()
+    setTimeout(() => {
+      toast.success("Log out successfully");
+      dispatch(logOutUser());
+    }, 1000)
+  }
 
   return (
     <div className='bg-bgSoftGray'>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<ProtectNotLogged isAuthenticated={isAuthenticated}>
-            <Sidebar />
+          <Route path="/" element={<ProtectNotLogged isAuthenticated={loggedIn}>
+            <Sidebar handleOpenLogout={handleOpenLogout} />
           </ProtectNotLogged>}>
             <Route index element={<Navigate to="chats" />} />
             <Route path="chats" element={<ChatsPage />} />
@@ -48,7 +63,7 @@ function App() {
             <Route path="settings" element={<SettingsPage handleOpenTheme={handleOpenTheme} handleOpenShortcuts={handleOpenShortcuts} />} />
           </Route>
 
-          <Route path="/auth" element={<ProtectLogged isAuthenticated={isAuthenticated}>
+          <Route path="/auth" element={<ProtectLogged isAuthenticated={loggedIn}>
             <Auth />
           </ProtectLogged>}>
             <Route index element={<Navigate to="login" />} />
@@ -64,6 +79,7 @@ function App() {
         <ModalShortcuts openShortcuts={openShortcuts} handleOpenShortcuts={handleOpenShortcuts} />
         <ModalCreateGroup open={openCreate} handleOpen={handleOpenCreate} />
         <ModalCalls open={openCalls} handleOpen={handleOpenCalls} />
+        <ModalLogout open={openLogout} handleOpen={handleOpenLogout} confirmLogOut={confirmLogOut} />
       </BrowserRouter>
     </div>
   )
