@@ -28,6 +28,20 @@ export const loginUser = createAsyncThunk('auth/login', async (body, { rejectWit
     }
 });
 
+// Thunk for forgot password a user
+export const forgotpasswordUser = createAsyncThunk('auth/forgotpassword', async (body, { rejectWithValue }) => {
+    try {
+        // Call the API to forgot password the user
+        const response = await useCreateData(`/auth/forgot-password`, body);
+        // Return the response data on success
+        return response.data;
+    } catch (error) {
+        console.log(error)
+        // Return the error response data on failure
+        return rejectWithValue(error.response.data);
+    }
+});
+
 
 // Initial state for the authentication reducer
 const initialState = {
@@ -102,6 +116,23 @@ const authReducer = createSlice({
         });
         builder.addCase(loginUser.rejected, (state, action) => {
             state.loading = false;
+            state.error = action.payload;
+        });
+        
+        
+        // Handle pending, fulfilled and rejected state of forgot password thunk
+        builder.addCase(forgotpasswordUser.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(forgotpasswordUser.fulfilled, (state, action) => {
+            state.loading = false;
+            state.user = action.payload;
+            state.error = null;
+        });
+        builder.addCase(forgotpasswordUser.rejected, (state, action) => {
+            state.loading = false;
+            state.user = {};
             state.error = action.payload;
         });
     },
