@@ -1,25 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
+import useForgotpassword from '../../hooks/auth/useForgotpassword';
 
 const ResetPassword = () => {
-    const [email, setEmail] = useState("");
-    const [errors, setErrors] = useState({});
-
-    const validateValues = () => {
-        let errors = {}
-        if (email === '') {
-            errors.email = "Please enter your email";
-        }
-        return errors;
-    }
-    
-    const handleChangeEmail = (e) => {
-        setEmail(e.target.value);
-    }
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setErrors(validateValues());
-    }
+    const [
+        email,
+        handleChangeEmail,
+        handleSubmit,
+        errors
+    ] = useForgotpassword();
 
     return (
         <form className="mt-8 space-y-3" onSubmit={handleSubmit}>
