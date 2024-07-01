@@ -86,6 +86,7 @@ const authReducer = createSlice({
             state.user_email = state.user.email;
             state.user_id = state.user.user_id;
             state.token = state.user.token;
+            state.error = null;
 
             // Store token, user_email and user_id in localStorage
             localStorage.setItem("token", state.token);
@@ -94,6 +95,7 @@ const authReducer = createSlice({
         });
         builder.addCase(registerUser.rejected, (state, action) => {
             state.loading = false;
+            state.user = {};
             state.error = action.payload;
         });
         
@@ -109,6 +111,7 @@ const authReducer = createSlice({
             state.user = action.payload;
             state.user_id = state.user.user_id;
             state.token = state.user.token;
+            state.error = null;
 
             // Store token and user_id in localStorage
             localStorage.setItem("token", state.token);
@@ -116,6 +119,7 @@ const authReducer = createSlice({
         });
         builder.addCase(loginUser.rejected, (state, action) => {
             state.loading = false;
+            state.user = {};
             state.error = action.payload;
         });
         
