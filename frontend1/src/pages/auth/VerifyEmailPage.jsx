@@ -1,7 +1,18 @@
 import React from 'react';
 import VerifyEmail from '../../components/auth/VerifyEmail';
+import Loading from '../../components/utils/Loading';
+import useVerifyEmail from '../../hooks/auth/useVerifyEmail';
 
 const VerifyEmailPage = () => {
+    const [
+        otp,
+        handleChangeOtp,
+        handleSubmit,
+        sendCodeAgain,
+        loading,
+        errors
+    ] = useVerifyEmail();
+    
     return (
         <div className='sm-max:px-[5px]'>
             <div className="mb-5 relative px-[5px]">
@@ -9,7 +20,22 @@ const VerifyEmailPage = () => {
             </div>
 
             {/* Login form */}
-            <VerifyEmail />
+            <VerifyEmail
+                otp={otp}
+                handleChangeOtp={handleChangeOtp}
+                handleSubmit={handleSubmit}
+                errors={errors}
+            />
+
+            {
+                errors.otp === "Reset code is invalid or has expired" ?
+                    <div className='mt-3 text-textNeutralGray cursor-pointer' onClick={sendCodeAgain}>Send code again</div>
+                : null
+            }
+
+            {
+                loading ? <Loading /> : null
+            }
         </div>
     );
 }
