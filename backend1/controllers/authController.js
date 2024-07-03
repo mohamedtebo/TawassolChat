@@ -357,6 +357,14 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 });
 
 exports.verifyPasswordResetCode = catchAsync(async (req, res, next) => {
+  // Check for a reset code in the order
+  if (!req.body.otp) {
+    return res.status(400).json({
+      status: "error",
+      message: "Reset code required",
+    });
+  }
+
   // 1) Get user based on reset code ! because we have not user id
   const hashedResetCode = crypto
     .createHash('sha256')
@@ -368,8 +376,12 @@ exports.verifyPasswordResetCode = catchAsync(async (req, res, next) => {
     passwordResetCode: hashedResetCode,
     passwordResetExpires: { $gt: Date.now() },
   });
+
   if (!user) {
-    return next(new ApiError('Reset code is invalid or has expired', 400));
+    return res.status(400).json({
+      status: "error",
+      message: "Reset code is invalid or has expired",
+    });
   }
   // 4) If reset code has not expired, and there is user send res with userId
   user.resetCodeVerified = true;
@@ -377,6 +389,7 @@ exports.verifyPasswordResetCode = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'Success',
+    message: "The reset code has been verified successfully"
   });
 });
 
