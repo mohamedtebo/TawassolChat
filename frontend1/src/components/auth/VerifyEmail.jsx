@@ -1,35 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import OtpInput from 'react-otp-input';
 
-const VerifyEmail = () => {
-    const [otp, setOtp] = useState('');
-    const [errors, setErrors] = useState({});
-
-    const validateValues = () => {
-        let errors = {}
-        if (otp === '') {
-            errors.otp = "Please enter your otp";
-        }
-        return errors;
-    }
-
-    const handleChangeOtp = (e) => {
-        setOtp(e);
-    }
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setErrors(validateValues());
-        console.log(otp)
-        // dispatch(registerUser({
-        //     firstName: firstName,
-        //     lastName: lastName,
-        //     phone: phone,
-        //     email: email,
-        //     password: password
-        // }));
-    }
-
+const VerifyEmail = ({otp, handleChangeOtp, handleSubmit, errors}) => {
     return (
         <form className="mt-8 space-y-3" onSubmit={handleSubmit}>
             <div className='flex flex-col gap-3 relative'>
