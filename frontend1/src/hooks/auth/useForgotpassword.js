@@ -46,7 +46,7 @@ const useForgotpassword = () => {
                     setEmail("")
                 }, 500)
                 setTimeout(() => {
-                    navigate('/auth/new-password')
+                    navigate('/auth/verify-email')
                 }, 1000)
             }
         }
