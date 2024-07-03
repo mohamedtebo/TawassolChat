@@ -42,6 +42,20 @@ export const forgotpasswordUser = createAsyncThunk('auth/forgotpassword', async 
     }
 });
 
+// Thunk for VerifyPassword otp a user
+export const VerifyPasswordUser = createAsyncThunk('auth/VerifyPassword', async (body, { rejectWithValue }) => {
+    try {
+        // Call the API to forgot password the user
+        const response = await useCreateData(`/auth//verifyResetCode`, body);
+        // Return the response data on success
+        return response.data;
+    } catch (error) {
+        console.log(error)
+        // Return the error response data on failure
+        return rejectWithValue(error.response.data);
+    }
+});
+
 
 // Initial state for the authentication reducer
 const initialState = {
@@ -72,6 +86,11 @@ const authReducer = createSlice({
             localStorage.removeItem("token");
             localStorage.removeItem("user_id");
             localStorage.removeItem("user_email");
+        },
+        sendCodeAgainUser: (state) => {
+            state.user = {};
+            state.loading = false;
+            state.error = null;
         }
     },
     extraReducers: (builder) => {
@@ -139,8 +158,24 @@ const authReducer = createSlice({
             state.user = {};
             state.error = action.payload;
         });
+
+        // Handle pending, fulfilled and rejected state of verify password thunk
+        builder.addCase(VerifyPasswordUser.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(VerifyPasswordUser.fulfilled, (state, action) => {
+            state.loading = false;
+            state.user = action.payload;
+            state.error = null;
+        });
+        builder.addCase(VerifyPasswordUser.rejected, (state, action) => {
+            state.loading = false;
+            state.user = {};
+            state.error = action.payload;
+        });
     },
 });
 
-export const { logOutUser } = authReducer.actions
+export const { logOutUser, sendCodeAgainUser } = authReducer.actions
 export default authReducer.reducer
