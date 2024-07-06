@@ -1,43 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
 
-const NewPassword = () => {
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [errors, setErrors] = useState({});
-    const [showshowPass, setShowPass] = useState(false)
-    const [showConfirmPass, setShowConfirmPass] = useState(false)
+const NewPassword = ({
+    errors,
+    password,
+    handleChangePassword,
+    confirmPassword,
+    handleChangeConfirmPassword,
+    showshowPass,
+    handleShowPass,
+    showConfirmPass,
+    handleShowConfirmPass,
+    handleSubmit
+}) => {
 
-    const validateValues = () => {
-        let errors = {}
-        if (password === '') {
-            errors.password = "Please enter your password";
-        }
-        if (confirmPassword === '') {
-            errors.confirmPassword = "Please enter your confirmPassword";
-        }
-        return errors;
-    }
-    
-    const handleChangePassword = (e) => {
-        setPassword(e.target.value);
-    }
-
-    const handleChangeConfirmPassword = (e) => {
-        setConfirmPassword(e.target.value);
-    }
-
-    const handleShowPass = () => {
-        setShowPass(!showshowPass)
-    }
-    const handleShowConfirmPass = () => {
-        setShowConfirmPass(!showConfirmPass)
-    }
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setErrors(validateValues());
-    }
 
     return (
         <form className="mt-8 space-y-3" onSubmit={handleSubmit}>
