@@ -22,7 +22,6 @@ export const loginUser = createAsyncThunk('auth/login', async (body, { rejectWit
         // Return the response data on success
         return response.data;
     } catch (error) {
-        console.log(error)
         // Return the error response data on failure
         return rejectWithValue(error.response.data);
     }
@@ -36,7 +35,6 @@ export const forgotpasswordUser = createAsyncThunk('auth/forgotpassword', async 
         // Return the response data on success
         return response.data;
     } catch (error) {
-        console.log(error)
         // Return the error response data on failure
         return rejectWithValue(error.response.data);
     }
@@ -50,7 +48,6 @@ export const VerifyPasswordUser = createAsyncThunk('auth/VerifyPassword', async 
         // Return the response data on success
         return response.data;
     } catch (error) {
-        console.log(error)
         // Return the error response data on failure
         return rejectWithValue(error.response.data);
     }
@@ -64,7 +61,6 @@ export const resetPasswordUser = createAsyncThunk('auth/resetPassword', async (b
         // Return the response data on success
         return response.data;
     } catch (error) {
-        console.log(error)
         // Return the error response data on failure
         return rejectWithValue(error.response.data);
     }
