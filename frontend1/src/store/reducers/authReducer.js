@@ -46,7 +46,21 @@ export const forgotpasswordUser = createAsyncThunk('auth/forgotpassword', async 
 export const VerifyPasswordUser = createAsyncThunk('auth/VerifyPassword', async (body, { rejectWithValue }) => {
     try {
         // Call the API to forgot password the user
-        const response = await useCreateData(`/auth//verifyResetCode`, body);
+        const response = await useCreateData(`/auth/verifyResetCode`, body);
+        // Return the response data on success
+        return response.data;
+    } catch (error) {
+        console.log(error)
+        // Return the error response data on failure
+        return rejectWithValue(error.response.data);
+    }
+});
+
+// Thunk for reset-password otp a user
+export const resetPasswordUser = createAsyncThunk('auth/resetPassword', async (body, { rejectWithValue }) => {
+    try {
+        // Call the API to forgot password the user
+        const response = await useCreateData(`/auth/reset-password`, body);
         // Return the response data on success
         return response.data;
     } catch (error) {
@@ -89,8 +103,11 @@ const authReducer = createSlice({
         },
         sendCodeAgainUser: (state) => {
             state.user = {};
+            state.user_email = "";
             state.loading = false;
             state.error = null;
+
+            localStorage.removeItem("user_email");
         }
     },
     extraReducers: (builder) => {
@@ -167,9 +184,31 @@ const authReducer = createSlice({
         builder.addCase(VerifyPasswordUser.fulfilled, (state, action) => {
             state.loading = false;
             state.user = action.payload;
+            state.user_email = state.user.email;
             state.error = null;
+
+            localStorage.setItem("user_email", state.user_email);
         });
         builder.addCase(VerifyPasswordUser.rejected, (state, action) => {
+            state.loading = false;
+            state.user = {};
+            state.user_email = "";
+            state.error = action.payload;
+            
+            localStorage.removeItem("user_email");
+        });
+
+        // Handle pending, fulfilled and rejected state of reset password thunk
+        builder.addCase(resetPasswordUser.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(resetPasswordUser.fulfilled, (state, action) => {
+            state.loading = false;
+            state.user = action.payload;
+            state.error = null;
+        });
+        builder.addCase(resetPasswordUser.rejected, (state, action) => {
             state.loading = false;
             state.user = {};
             state.error = action.payload;
