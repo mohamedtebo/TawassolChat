@@ -32,29 +32,18 @@ exports.register = catchAsync(async (req, res, next) => {
   const existingUserByEmail = await User.findOne({ email });
   const existingUserByPhone = await User.findOne({ phone });
 
-  if (existingUserByPhone && existingUserByPhone.verified) {
+  if (existingUserByPhone) {
     // user with this phone already exists, Please login
     return res.status(400).json({
       status: "error",
       message: "Phone already in use, Please login.",
     });
-  } else if (existingUserByEmail && existingUserByEmail.verified) {
+  } else if (existingUserByEmail) {
     // User with this email already exists and is verified
     return res.status(400).json({
       status: "error",
       message: "Email already in use, Please login.",
     });
-  } else if (existingUserByEmail || existingUserByPhone) {
-    // If not verified, update the previous user based on whichever field matched
-    const updateQuery = existingUserByEmail ? { email: email } : { phone: phone };
-    await User.findOneAndUpdate(updateQuery, filteredBody, {
-      new: true,
-      validateModifiedOnly: true,
-    });
-
-    // generate an otp and send to email
-    req.userId = existingUserByEmail ? existingUserByEmail._id : existingUserByPhone._id;
-    // next();
   } else {
     // if user is not created before than create a new one
     const new_user = await User.create(filteredBody);
