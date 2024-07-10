@@ -68,12 +68,12 @@ export const resetPasswordUser = createAsyncThunk('auth/resetPassword', async (b
 
 
 // Initial state for the authentication reducer
-const initialState = {
+const initialState = JSON.parse(localStorage.getItem('authState')) || {
     user: {},
     loggedIn: false,
-    token: localStorage.getItem("token") || "",
-    user_email: localStorage.getItem("user_email") || "",
-    user_id: localStorage.getItem("user_id") || "",
+    token: "",
+    user_email: "",
+    user_id: "",
     loading: false,
     error: null,
 };
@@ -93,9 +93,7 @@ const authReducer = createSlice({
             state.token = "";
 
             // Store token and user_id in localStorage
-            localStorage.removeItem("token");
-            localStorage.removeItem("user_id");
-            localStorage.removeItem("user_email");
+            localStorage.removeItem('authState');
         },
         sendCodeAgainUser: (state) => {
             state.user = {};
@@ -103,7 +101,8 @@ const authReducer = createSlice({
             state.loading = false;
             state.error = null;
 
-            localStorage.removeItem("user_email");
+            // localStorage.removeItem("user_email");
+            localStorage.setItem('authState', JSON.stringify(state));
         }
     },
     extraReducers: (builder) => {
@@ -121,9 +120,7 @@ const authReducer = createSlice({
             state.error = null;
 
             // Store token, user_email and user_id in localStorage
-            localStorage.setItem("token", state.token);
-            localStorage.setItem("user_email", state.user_email);
-            localStorage.setItem("user_id", state.user_id);
+            localStorage.setItem('authState', JSON.stringify(state));
         });
         builder.addCase(registerUser.rejected, (state, action) => {
             state.loading = false;
@@ -146,8 +143,9 @@ const authReducer = createSlice({
             state.error = null;
 
             // Store token and user_id in localStorage
-            localStorage.setItem("token", state.token);
-            localStorage.setItem("user_id", state.user_id);
+            // localStorage.setItem("token", state.token);
+            // localStorage.setItem("user_id", state.user_id);
+            localStorage.setItem('authState', JSON.stringify(state));
         });
         builder.addCase(loginUser.rejected, (state, action) => {
             state.loading = false;
@@ -182,16 +180,12 @@ const authReducer = createSlice({
             state.user = action.payload;
             state.user_email = state.user.email;
             state.error = null;
-
-            localStorage.setItem("user_email", state.user_email);
         });
         builder.addCase(VerifyPasswordUser.rejected, (state, action) => {
             state.loading = false;
             state.user = {};
             state.user_email = "";
             state.error = action.payload;
-            
-            localStorage.removeItem("user_email");
         });
 
         // Handle pending, fulfilled and rejected state of reset password thunk
