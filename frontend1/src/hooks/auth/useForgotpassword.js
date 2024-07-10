@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { forgotpasswordUser } from "../../store/reducers/authReducer";
 import { toast } from "react-toastify";
@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 const useForgotpassword = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {user, error} = useSelector(state => state.auth);
     const [email, setEmail] = useState("");
     const [errors, setErrors] = useState({});
 
@@ -35,27 +34,27 @@ const useForgotpassword = () => {
             await dispatch(forgotpasswordUser({
                 email: email
             }))
+            .unwrap()
+            .then(user => {
+                if(user.message) {
+                    toast.success(user.message)
+                    setTimeout(() => {
+                        setEmail("")
+                    }, 500)
+                    setTimeout(() => {
+                        navigate('/auth/verify-email')
+                    }, 1000)
+                }
+            })
+            .catch(error => {
+                if(error) {
+                    if(error.message) {
+                        setErrors({ email: error.message });
+                    }
+                }
+            });
         }
     }
-
-    useEffect(() => {
-        if(user) {
-            if(user.message) {
-                toast.success(user.message)
-                setTimeout(() => {
-                    setEmail("")
-                }, 500)
-                setTimeout(() => {
-                    navigate('/auth/verify-email')
-                }, 1000)
-            }
-        }
-        if(error) {
-            if(error.message) {
-                setErrors({ email: error.message });
-            }
-        }
-    }, [user, error])
 
     return [
         email,

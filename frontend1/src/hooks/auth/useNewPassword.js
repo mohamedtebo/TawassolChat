@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { sendCodeAgainUser } from '../../store/reducers/authReducer';
+import { resetPasswordUser, sendCodeAgainUser } from '../../store/reducers/authReducer';
 
 const useNewPassword = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {user, user_email, loading, error} = useSelector(state => state.auth);
+    const {user_email, loading} = useSelector(state => state.auth);
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [errors, setErrors] = useState({});
@@ -55,32 +55,28 @@ const useNewPassword = () => {
                 email:user_email,
                 password: password,
                 passwordConfirm: confirmPassword
-            }));
+            }))
+            .unwrap()
+            .then(user => {
+                if(user.message === "Password Reseted Successfully") {
+                    toast.success(user.message);
+    
+                    setTimeout(() => {
+                        setPassword("")
+                        setConfirmPassword("")
+                    }, 500)
+                    setTimeout(() => {
+                        navigate('/auth/login')
+                    }, 1500)
+                }
+            })
+            .catch(error => {
+                if(error.message) {
+                    setErrors({confirmPassword: error.message});
+                }
+            });
         }
     }
-
-    useEffect(() => {
-        if(user) {
-            console.log(user)
-            if(user.message === "Password Reseted Successfully") {
-                toast.success(user.message);
-
-                setTimeout(() => {
-                    setPassword("")
-                    setConfirmPassword("")
-                }, 500)
-                setTimeout(() => {
-                    navigate('/auth/login')
-                }, 1500)
-            }
-        }
-        if(error) {
-            console.log(error)
-            if(error.message) {
-                setErrors({confirmPassword: error.message});
-            }
-        }
-    }, [user, error])
 
     const notResetPassword = () => {
         setTimeout(() => {

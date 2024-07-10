@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { loginUser } from "../../store/reducers/authReducer";
 
 const useAddLogin = () => {
     const dispatch = useDispatch();
-    const {user, error} = useSelector(state => state.auth);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
@@ -49,27 +48,25 @@ const useAddLogin = () => {
             dispatch(loginUser({
                 email: email,
                 password: password
-            }));
+            }))
+            .unwrap()
+            .then(user => {
+                if(user.message === "Logged in successfully!") {
+                    toast.success("Logged in successfully");
+                    setEmail("")
+                    setPassword("")
+                }
+            })
+            .catch(error => {
+                if(error.message === "Email address is incorrect") {
+                setErrors({ email: error.message });
+                }
+                if(error.message === "Password is incorrect") {
+                    setErrors({ password: "error.message" });
+                }
+            });
         }
     }
-
-    useEffect(() => {
-        if(error) {
-            if (error.message === "Email address is incorrect") {
-                toast.error(error.message);
-            } else if (error.message === "Password is incorrect") {
-                toast.error(error.message);
-            }
-
-        }
-        if(user) {
-            if(user.message === "Logged in successfully!") {
-                toast.success("Logged in successfully");
-                setEmail("")
-                setPassword("")
-            }
-        }
-    }, [error, user])
 
     return [
         email,

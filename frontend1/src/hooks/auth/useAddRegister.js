@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { register } from '../../store/actions/authAction';
 import { registerUser } from "../../store/reducers/authReducer";
@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 const useAddRegister = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {user, error} = useSelector(state => state.auth);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
@@ -97,50 +96,33 @@ const useAddRegister = () => {
                 phone: phone,
                 email: email,
                 password: password
-            }));
+            }))
+            .unwrap()
+            .then(user => {
+                if(user.message === "User registered successfully!") {
+                    toast.success("User registered successfully");
+                    setTimeout(() => {
+                        setFirstName("")
+                        setLastName("")
+                        setEmail("")
+                        setPhone("")
+                        setPassword("")
+                    }, 500)
+                    setTimeout(() => {
+                        navigate('/auth/login')
+                    }, 1500)
+                }
+            })
+            .catch(error => {
+                if(error.message === "Email already in use, Please login.") {
+                setErrors({ email: "Email already in use, Please login or enter another email." });
+                }
+                if(error.message === "Phone already in use, Please login.") {
+                    setErrors({ phone: "Phone already in use, Please login or enter another phone." });
+                }
+            });
         }
     }
-    
-    // useEffect to handle side effects based on user and error state
-    useEffect(() => {
-        if(error) {
-            if(error.message === "Phone already in use, Please login.") {
-                toast.error("Phone already in use, Please login.");
-                setTimeout(() => {
-                    setFirstName("")
-                    setLastName("")
-                    setEmail("")
-                    setPhone("")
-                    setPassword("")
-                }, 500)
-            }
-            if(error.message === "Email already in use, Please login.") {
-                toast.error("Email already in use, Please login.");
-                setTimeout(() => {
-                    setFirstName("")
-                    setLastName("")
-                    setEmail("")
-                    setPhone("")
-                    setPassword("")
-                }, 500)
-            }
-        }
-        if(user) {
-            if(user.message === "User registered successfully!") {
-                toast.success("User registered successfully");
-                setTimeout(() => {
-                    setFirstName("")
-                    setLastName("")
-                    setEmail("")
-                    setPhone("")
-                    setPassword("")
-                }, 500)
-                setTimeout(() => {
-                    navigate('/auth/login')
-                }, 1500)
-            }
-        }
-    }, [error, user])
 
 
     return [
