@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Sidebar from "./components/utils/Sidebar";
 import ChatsPage from "./pages/chats/ChatsPage";
@@ -23,20 +23,24 @@ import { useDispatch, useSelector } from "react-redux";
 import ModalLogout from "./components/modal/ModalLogout";
 import { logOutUser } from "./store/reducers/authReducer";
 import { toast } from "react-toastify";
+import Friends from "./components/modal/Friends";
+import { connectSocket, socket } from "./socket";
 
 function App() {
-  const dispatch = useDispatch()
-  const {loggedIn} = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+  const {loggedIn, user_id} = useSelector(state => state.auth);
   const [openTheme, setOpenTheme] = useState(false);
   const [openShortcuts, setOpenShortcuts] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
   const [openCalls, setOpenCalls] = useState(false);
   const [openLogout, setOpenLogout] = useState(false);
+  const [openFriends, setOpenFriends] = useState(false);
   const handleOpenTheme = () => setOpenTheme(!openTheme);
   const handleOpenShortcuts = () => setOpenShortcuts(!openShortcuts);
   const handleOpenCreate = () => setOpenCreate(!openCreate);
   const handleOpenCalls = () => setOpenCalls(!openCalls);
   const handleOpenLogout = () => setOpenLogout(!openLogout);
+  const handleOpenFriends = () => setOpenFriends(!openFriends);
 
   const confirmLogOut = () => {
     handleOpenLogout()
@@ -46,6 +50,38 @@ function App() {
     }, 1000)
   }
 
+  useEffect(() => {
+    if(loggedIn) {
+      if(!window.location.hash) {
+        window.location = window.location + "#loaded";
+        window.location.reload();
+      }
+
+      if (!socket) {
+        connectSocket(user_id);
+      }
+  
+      socket.on("new_friend_request", (data) => {
+        toast.success(data.message);
+      });
+
+      socket.on("request_accepted", (data) => {
+        toast.success(data.message);
+      });
+
+      socket.on("request_sent", (data) => {
+        toast.success(data.message);
+      });
+    }
+
+    // Remove event listener on component unmount
+    return () => {
+      socket?.off("new_friend_request");
+      socket?.off("request_accepted");
+      socket?.off("request_sent");
+    }
+  }, [loggedIn, user_id])
+
   return (
     <div className='bg-bgSoftGray'>
       <BrowserRouter>
@@ -54,7 +90,7 @@ function App() {
             <Sidebar handleOpenLogout={handleOpenLogout} />
           </ProtectNotLogged>}>
             <Route index element={<Navigate to="chats" />} />
-            <Route path="chats" element={<ChatsPage />} />
+            <Route path="chats" element={<ChatsPage handleOpenFriends={handleOpenFriends} />} />
             <Route path="chat/:id" element={<PrivateChatPage />} />
             <Route path="groups" element={<GroupsPage handleOpen={handleOpenCreate} />} />
             <Route path="group/:id" element={<PrivateGroupPage />} />
@@ -80,6 +116,7 @@ function App() {
         <ModalCreateGroup open={openCreate} handleOpen={handleOpenCreate} />
         <ModalCalls open={openCalls} handleOpen={handleOpenCalls} />
         <ModalLogout open={openLogout} handleOpen={handleOpenLogout} confirmLogOut={confirmLogOut} />
+        <Friends open={openFriends} handleOpen={handleOpenFriends} />
       </BrowserRouter>
     </div>
   )
