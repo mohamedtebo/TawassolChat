@@ -6,7 +6,7 @@ import pen from '../../assets/pen.png';
 import { HiOutlinePlus } from "react-icons/hi";
 import { useSelector } from 'react-redux';
 
-const ChatsPage = () => {
+const ChatsPage = ({handleOpenFriends}) => {
     const {selectedTheme} = useSelector(state => state.theme);
 
     return (
@@ -50,6 +50,7 @@ const ChatsPage = () => {
                         rounded-full
                         drop-shadow-shadow
                         cursor-pointer"
+                        onClick={handleOpenFriends}
                     >
                         <HiOutlinePlus />
                     </div>
