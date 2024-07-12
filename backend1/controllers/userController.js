@@ -41,9 +41,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 });
 
 exports.getUsers = catchAsync(async (req, res, next) => {
-  const all_users = await User.find({
-    verified: true,
-  }).select("firstName lastName _id");
+  const all_users = await User.find().select("firstName lastName _id");
 
   const this_user = req.user;
 
