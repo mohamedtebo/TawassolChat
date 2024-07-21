@@ -1,47 +1,19 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
+import useAddLogin from '../../Hooks/Auth/useAddLogin';
 
 const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [errors, setErrors] = useState({});
-    const [showshowPass, setShowPass] = useState(false)
-
-    const validateValues = () => {
-        let errors = {}
-        if (email === '') {
-            errors.email = "Please enter your email";
-        }
-        if (password === '') {
-            errors.password = "Please enter your password";
-        }
-        return errors;
-    }
-    
-    const handleChangeEmail = (e) => {
-        setEmail(e.target.value);
-        if (errors.email) {
-            setErrors(prevErrors => ({ ...prevErrors, email: '' }));
-        }
-    }
-    
-    const handleChangePassword = (e) => {
-        setPassword(e.target.value);
-        if (errors.password) {
-            setErrors(prevErrors => ({ ...prevErrors, password: '' }));
-        }
-    }
-
-    const handleShowPass = () => {
-        setShowPass(!showshowPass)
-    }
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const validationErrors = validateValues();
-        setErrors(validationErrors);
-    }
+    const [
+        email,
+        handleChangeEmail,
+        password,
+        handleChangePassword,
+        errors,
+        showshowPass,
+        handleShowPass,
+        handleSubmit
+    ] = useAddLogin();
 
     return (
         <form className="mt-8 space-y-3" onSubmit={handleSubmit}>
