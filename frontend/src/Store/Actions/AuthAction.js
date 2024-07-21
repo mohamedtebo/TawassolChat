@@ -27,3 +27,17 @@ export const loginUser = createAsyncThunk('Auth/login', async (body, { rejectWit
         return rejectWithValue(error.response.data);
     }
 });
+
+
+// Thunk for forgot password a user
+export const forgotpasswordUser = createAsyncThunk('Auth/forgotpassword', async (body, { rejectWithValue }) => {
+    try {
+        // Call the API to forgot password the user
+        const response = await useCreateData(`/auth/forgot-password`, body);
+        // Return the response data on success
+        return response.data;
+    } catch (error) {
+        // Return the error response data on failure
+        return rejectWithValue(error.response.data);
+    }
+});
