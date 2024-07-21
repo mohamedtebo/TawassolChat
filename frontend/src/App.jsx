@@ -22,9 +22,12 @@ import ModalCreateGroup from "./Components/Modal/ModalCreateGroup";
 import ModalCalls from "./Components/Modal/ModalCalls";
 import ModalLogout from "./Components/Modal/ModalLogout";
 import Friends from "./Components/Modal/Friends";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logOutUser } from "./Store/Reducers/AuthReducer";
+import { toast } from "react-toastify";
 
 function App() {
+  const dispatch = useDispatch();
   const { isAuthenticated } = useSelector(state => state.Auth);
   const [openTheme, setOpenTheme] = useState(false);
   const [openShortcuts, setOpenShortcuts] = useState(false);
@@ -43,7 +46,7 @@ function App() {
     handleOpenLogout()
     setTimeout(() => {
       toast.success("Log out successfully");
-      // dispatch(logOutUser());
+      dispatch(logOutUser());
     }, 1000)
   }
 
