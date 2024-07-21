@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { forgotpasswordUser, loginUser, registerUser } from '../Actions/AuthAction';
+import { forgotpasswordUser, loginUser, registerUser, VerifyPasswordUser } from '../Actions/AuthAction';
 
 // Initial state for the authentication reducer
 const initialState = JSON.parse(localStorage.getItem('authState')) || {
@@ -26,6 +26,14 @@ export const AuthReducer = createSlice({
 
             // Store token and user_id in localStorage
             localStorage.removeItem('authState');
+        },
+        sendCodeAgainUser: (state) => {
+            state.user = {};
+            state.user_email = "";
+            state.loading = false;
+            state.error = null;
+
+            localStorage.setItem('authState', JSON.stringify(state));
         }
     },
     extraReducers: (builder) => {
@@ -92,8 +100,28 @@ export const AuthReducer = createSlice({
                 state.user = {};
                 state.error = action.payload;
             });
+
+
+        // Handle pending, fulfilled and rejected state of verify password thunk
+        builder
+            .addCase(VerifyPasswordUser.pending, (state) => {
+                state.status = 'loading';
+                state.error = null;
+            })
+            .addCase(VerifyPasswordUser.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.user = action.payload;
+                state.user_email = state.user.email;
+                state.error = null;
+            })
+            .addCase(VerifyPasswordUser.rejected, (state, action) => {
+                state.status = 'failed';
+                state.user = {};
+                state.user_email = "";
+                state.error = action.payload;
+            });
     }
 })
 
-export const { logOutUser } = AuthReducer.actions;
+export const { logOutUser, sendCodeAgainUser } = AuthReducer.actions;
 export default AuthReducer.reducer;
