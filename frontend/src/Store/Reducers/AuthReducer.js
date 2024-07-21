@@ -8,13 +8,26 @@ const initialState = JSON.parse(localStorage.getItem('authState')) || {
     token: "",
     user_email: "",
     user_id: "",
-    status: 'loading',
+    status: 'idle',
     error: null,
 }
 
 export const AuthReducer = createSlice({
     name: 'Auth',
     initialState,
+    reducers: {
+        logOutUser: (state) => {
+            state.user = {};
+            state.status = 'idle';
+            state.isAuthenticated = false;
+            state.user_email = "";
+            state.user_id = "";
+            state.token = "";
+
+            // Store token and user_id in localStorage
+            localStorage.removeItem('authState');
+        }
+    },
     extraReducers: (builder) => {
         // Handle pending, fulfilled and rejected state of registerUser thunk
         builder
@@ -64,4 +77,5 @@ export const AuthReducer = createSlice({
     }
 })
 
+export const { logOutUser } = AuthReducer.actions;
 export default AuthReducer.reducer;
