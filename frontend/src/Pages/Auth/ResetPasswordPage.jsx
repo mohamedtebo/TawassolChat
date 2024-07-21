@@ -3,8 +3,12 @@ import ResetPassword from '../../Components/Auth/ResetPassword';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
+import { useSelector } from 'react-redux';
+import Loading from '../../Components/Utils/Loading';
 
 const ResetPasswordPage = () => {
+    const { status } = useSelector(state => state.Auth)
+
     return (
         <div className='sm-max:px-[5px]'>
             <div className="mb-5 relative px-[5px]">
@@ -29,6 +33,11 @@ const ResetPasswordPage = () => {
                 </motion.div>
                 <span className='text-textNeutralGray'>Return to login</span>
             </Link>
+            
+            {/* Loading component */}
+            {
+                status === 'loading' ? <Loading /> : null
+            }
         </div>
     );
 }
