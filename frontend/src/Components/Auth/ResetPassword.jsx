@@ -1,29 +1,13 @@
 import React, { useState } from 'react';
+import useForgotPassword from '../../Hooks/Auth/useForgotPassword';
 
 const ResetPassword = () => {
-    const [email, setEmail] = useState("");
-    const [errors, setErrors] = useState({});
-
-    const validateValues = () => {
-        let errors = {}
-        if (email === '') {
-            errors.email = "Please enter your email";
-        }
-        return errors;
-    }
-    
-    const handleChangeEmail = (e) => {
-        setEmail(e.target.value);
-        if (errors.email) {
-            setErrors(prevErrors => ({ ...prevErrors, email: '' }));
-        }
-    }
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const validationErrors = validateValues();
-        setErrors(validationErrors);
-    }
+    const [
+        email,
+        handleChangeEmail,
+        handleSubmit,
+        errors
+    ] = useForgotPassword();
 
     return (
         <form className="mt-8 space-y-3" onSubmit={handleSubmit}>
