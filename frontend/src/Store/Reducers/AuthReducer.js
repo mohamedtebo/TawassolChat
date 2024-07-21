@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { registerUser } from '../Actions/AuthAction';
+import { loginUser, registerUser } from '../Actions/AuthAction';
 
 // Initial state for the authentication reducer
 const initialState = JSON.parse(localStorage.getItem('authState')) || {
@@ -34,6 +34,29 @@ export const AuthReducer = createSlice({
                 localStorage.setItem('authState', JSON.stringify(state));
             })
             .addCase(registerUser.rejected, (state, action) => {
+                state.status = 'failed';
+                state.user = {};
+                state.error = action.payload;
+            });
+        
+        
+        // Handle pending, fulfilled and rejected state of loginUser thunk
+        builder
+            .addCase(loginUser.pending, (state) => {
+                state.status = 'loading';
+                state.error = null;
+            })
+            .addCase(loginUser.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.isAuthenticated = true;
+                state.user = action.payload;
+                state.user_id = state.user.user_id;
+                state.token = state.user.token;
+                state.error = null;
+
+                localStorage.setItem('authState', JSON.stringify(state));
+            })
+            .addCase(loginUser.rejected, (state, action) => {
                 state.status = 'failed';
                 state.user = {};
                 state.error = action.payload;
