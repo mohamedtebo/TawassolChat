@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* style scroll-bar */
+@layer {
+    ::-webkit-scrollbar {
+        @apply w-[5px]
+    }
+    ::-webkit-scrollbar-thumb {
+        @apply bg-textNeutralGray rounded-[5px]
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        @apply cursor-pointer
+    }
+}
+
+
+/* style classshowIcon in MsgChat.jsx */
+.chat-user .showIcon {
+    display: none;
+}
+.chat-user:hover .showIcon {
+    display: block;
+}
+.chat-user:hover .badge {
+    display: none;
+}
+
+
+/* style message chat */
+@layer {
+    .message .message-time {
+        @apply hidden
+    }
+    .message:hover .message-time {
+        @apply block
+    }
+    .message-area .message:not(:last-child) .MenuItems {
+        @apply -top-[10px]
+    }
+    .message-area .message:last-child .MenuItems {
+        @apply bottom-[30px]
+    }
+    .TextArea::-webkit-scrollbar {
+        @apply hidden
+    }
+}
+@media (max-width: 575px) {
+    .TextAreaSmall {
+        min-width: 100px;
+    }
+}
+
+
+/* style paperBtn in ChatFooter */
+@layer {
+    .paperBtn .typography {
+        @apply !hidden
+    }
+    .paperBtn:hover .typography {
+        @apply !block
+    }
+}
+
+
+/* style ContactInfo */
+@layer {
+    .ContactInfo .info:not(:last-child) {
+        @apply !border-bgSoftGray !border-b-[2px] !border-solid
+    }
+}
+
+
+.mediaInfoContent {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.mediaInfoContent.show {
+  max-height: 1000px; /* أي قيمة كبيرة تكفي لعرض كل المحتوى */
+}
+
+
+
+/* style for calls page */
+@layer {
+    .imgUserCall .inline-flex {
+        @apply !block
+    }
+}
+
+/* style for otp-input */
+.otp-input-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.otp-input {
+    border: 1px solid rgb(224 224 224);
+}
+.otp-input-error {
+    border: 1px solid rgb(229 115 115);
+}
+.otp-input,
+.otp-input-error {
+    width: 35px !important;
+    height: 35px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 13px;
+    color: #333;
+}
+
+.otp-input:focus {
+    outline: none;
+}
+
+.otp-container {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* style for phone-input */
+.phone-input-container,
+.phone-input-container-error {
+    width: 100%;
+    height: 35px;
+    position: relative;
+} 
+
+.phone-input-container .form-control {
+    border: 1px solid rgb(224 224 224);
+}
+.phone-input-container-error .form-control {
+    border: 1px solid rgb(229 115 115);
+}
+.phone-input-container .form-control,
+.phone-input-container-error .form-control {
+    border-radius: 10px;
+    padding: 6px 60px;
+    width: 100%;
+    height: 100%;
+    font-size: 0.875rem;
+    outline: none;
+}
+/* .phone-input-container-error {
+    border-radius: 10px;
+} */
+.phone-input-container .form-control:focus,
+.phone-input-container-error .form-control:focus {
+    outline: none;
+}
+.phone-input-container .flag-dropdown {
+    border: 1px solid rgb(224 224 224);
+}
+.phone-input-container-error .flag-dropdown {
+    border: 1px solid rgb(229 115 115);
+}
+.phone-input-container .flag-dropdown,
+.phone-input-container-error .flag-dropdown {
+    border-radius: 10px 0 0 10px;
+    padding: 6px;
+}
