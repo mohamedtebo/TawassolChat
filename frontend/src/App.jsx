@@ -22,9 +22,10 @@ import ModalCreateGroup from "./Components/Modal/ModalCreateGroup";
 import ModalCalls from "./Components/Modal/ModalCalls";
 import ModalLogout from "./Components/Modal/ModalLogout";
 import Friends from "./Components/Modal/Friends";
+import { useSelector } from "react-redux";
 
 function App() {
-  const isAuthenticated = true;
+  const { isAuthenticated } = useSelector(state => state.Auth);
   const [openTheme, setOpenTheme] = useState(false);
   const [openShortcuts, setOpenShortcuts] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
