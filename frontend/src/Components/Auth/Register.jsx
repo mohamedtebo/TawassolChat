@@ -2,88 +2,26 @@ import React, { useState } from 'react';
 import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
+import useAddRegister from '../../Hooks/Auth/useAddRegister';
 
 const Register = () => {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
-    const [password, setPassword] = useState("");
-    const [errors, setErrors] = useState({});
-    const [showshowPass, setShowPass] = useState(false)
-
-    // Function to validate form values
-    const validateValues = () => {
-        let errors = {}
-        if (firstName === '') {
-            errors.firstName = "Please enter your first name";
-        }
-        if (lastName === '') {
-            errors.lastName = "Please enter your last name";
-        }
-        if (email === '') {
-            errors.email = "Please enter your email";
-        }
-        if (password === '') {
-            errors.password = "Please enter your password";
-        }
-        if (phone === '') {
-            errors.phone = "Please enter your phone";
-        }
-        return errors;
-    }
-    
-    // Event handle for input firstName change
-    const handleChangeFirstName = (e) => {
-        setFirstName(e.target.value);
-        if (errors.firstName) {
-            setErrors(prevErrors => ({ ...prevErrors, firstName: '' }));
-        }
-    }
-    
-    // Event handle for input lastName change
-    const handleChangeLastName = (e) => {
-        setLastName(e.target.value);
-        if (errors.lastName) {
-            setErrors(prevErrors => ({ ...prevErrors, lastName: '' }));
-        }
-    }
-
-    // Event handle for input email change
-    const handleChangeEmail = (e) => {
-        setEmail(e.target.value);
-        if (errors.email) {
-            setErrors(prevErrors => ({ ...prevErrors, email: '' }));
-        }
-    }
-    
-    // Event handle for input phone change
-    const handleChangePhone = (e) => {
-        setPhone(e);
-        if (errors.phone) {
-            setErrors(prevErrors => ({ ...prevErrors, phone: '' }));
-        }
-    }
-    
-    // Event handle for input password change
-    const handleChangePassword = (e) => {
-        setPassword(e.target.value);
-        if (errors.password) {
-            setErrors(prevErrors => ({ ...prevErrors, password: '' }));
-        }
-    }
-
-    // Toggle password visibility
-    const handleShowPass = () => {
-        setShowPass(!showshowPass)
-    }
-
-    // Handle submit form
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const validationErrors = validateValues();
-        setErrors(validationErrors);
-    }
+    // Values and handlers from the custom hook
+    const [
+        firstName,
+        handleChangeFirstName,
+        lastName,
+        handleChangeLastName,
+        email,
+        handleChangeEmail,
+        phone,
+        handleChangePhone,
+        password,
+        handleChangePassword,
+        errors,
+        showshowPass,
+        handleShowPass,
+        handleSubmit,
+    ] = useAddRegister();
 
     return (
         <form className="mt-8 space-y-3" onSubmit={handleSubmit}>
