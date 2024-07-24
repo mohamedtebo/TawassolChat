@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { forgotpasswordUser, loginUser, registerUser, VerifyPasswordUser } from '../Actions/AuthAction';
+import { forgotpasswordUser, loginUser, registerUser, resetPasswordUser, VerifyPasswordUser } from '../Actions/AuthAction';
 
 // Initial state for the authentication reducer
 const initialState = JSON.parse(localStorage.getItem('authState')) || {
@@ -118,6 +118,24 @@ export const AuthReducer = createSlice({
                 state.status = 'failed';
                 state.user = {};
                 state.user_email = "";
+                state.error = action.payload;
+            });
+
+
+        // Handle pending, fulfilled and rejected state of reset password thunk
+        builder
+            .addCase(resetPasswordUser.pending, (state) => {
+                state.status = 'loading';
+                state.error = null;
+            })
+            .addCase(resetPasswordUser.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.user = action.payload;
+                state.error = null;
+            })
+            .addCase(resetPasswordUser.rejected, (state, action) => {
+                state.status = 'failed';
+                state.user = {};
                 state.error = action.payload;
             });
     }
