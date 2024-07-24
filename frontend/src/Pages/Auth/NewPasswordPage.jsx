@@ -2,55 +2,24 @@ import React, { useState } from 'react';
 import NewPassword from '../../Components/Auth/NewPassword';
 import { motion } from 'framer-motion';
 import { MdKeyboardDoubleArrowLeft } from 'react-icons/md'
+import useNewPassword from '../../Hooks/Auth/useNewPassword';
+import Loading from '../../Components/Utils/Loading';
 
 const NewPasswordPage = () => {
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [errors, setErrors] = useState({});
-    const [showshowPass, setShowPass] = useState(false)
-    const [showConfirmPass, setShowConfirmPass] = useState(false)
-
-    const validateValues = () => {
-        let errors = {}
-        if (password === '') {
-            errors.password = "Please enter your password";
-        }
-        if (confirmPassword === '') {
-            errors.confirmPassword = "Please enter your confirmPassword";
-        }
-        return errors;
-    }
-    
-    const handleChangePassword = (e) => {
-        setPassword(e.target.value);
-    }
-
-    const handleChangeConfirmPassword = (e) => {
-        setConfirmPassword(e.target.value);
-        
-        if (errors.confirmPassword) {
-            setErrors(prevErrors => ({ ...prevErrors, confirmPassword: '' }));
-        }
-    }
-
-    const handleShowPass = () => {
-        setShowPass(!showshowPass)
-    }
-    const handleShowConfirmPass = () => {
-        setShowConfirmPass(!showConfirmPass)
-    }
-
-    const handleSubmit = async(e) => {
-        e.preventDefault();
-        const validationErrors = validateValues();
-        setErrors(validationErrors);
-    }
-
-    const notResetPassword = () => {
-        setTimeout(() => {
-            navigate("/auth/login")
-        }, 1500)
-    }
+    const [
+        status,
+        errors,
+        password,
+        handleChangePassword,
+        confirmPassword,
+        handleChangeConfirmPassword,
+        showshowPass,
+        handleShowPass,
+        showConfirmPass,
+        handleShowConfirmPass,
+        handleSubmit,
+        notResetPassword
+    ] = useNewPassword();
 
     return (
         <div className='sm-max:px-[5px]'>
@@ -87,6 +56,11 @@ const NewPasswordPage = () => {
                 </motion.div>
                 <span className='text-textNeutralGray'>Return to login</span>
             </div>
+
+            {/* Loading component */}
+            {
+                status === 'loading' ? <Loading /> : null
+            }
         </div>
     );
 }
