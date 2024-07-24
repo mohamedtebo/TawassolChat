@@ -55,3 +55,17 @@ export const VerifyPasswordUser = createAsyncThunk('auth/VerifyPassword', async 
         return rejectWithValue(error.response.data);
     }
 });
+
+
+// Thunk for reset-password otp a user
+export const resetPasswordUser = createAsyncThunk('Auth/resetPassword', async (body, { rejectWithValue }) => {
+    try {
+        // Call the API to forgot password the user
+        const response = await useCreateData(`/auth/reset-password`, body);
+        // Return the response data on success
+        return response.data;
+    } catch (error) {
+        // Return the error response data on failure
+        return rejectWithValue(error.response.data);
+    }
+});
