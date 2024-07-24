@@ -87,6 +87,19 @@ const userSchema = new mongoose.Schema({
   }
 });
 
+const setImageUrl = (doc) => {
+  if (doc.avatar) {
+    const imageUrl = `${process.env.BASE_URL}/users/${doc.avatar}`;
+    doc.avatar = imageUrl;
+  }
+};
+userSchema.post('init', (doc) => {
+  setImageUrl(doc);
+});
+userSchema.post('save', (doc) => {
+  setImageUrl(doc);
+});
+
 userSchema.pre("save", async function (next) {
   // Only run this function if password was actually modified
   if (!this.isModified("otp") || !this.otp) return next();
