@@ -23,15 +23,18 @@ exports.getMe = catchAsync(async (req, res, next) => {
 });
 
 exports.updateMe = catchAsync(async (req, res, next) => {
-  const filteredBody = filterObj(
-    req.body,
-    "firstName",
-    "lastName",
-    "about",
-    "avatar"
-  );
+  const newUserData = {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    about: req.body.about,
+    avatar: req.body.avatar,
+  }
 
-  const userDoc = await User.findByIdAndUpdate(req.user._id, filteredBody);
+  const userDoc = await User.findByIdAndUpdate(req.user._id, newUserData, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
 
   res.status(200).json({
     status: "success",
